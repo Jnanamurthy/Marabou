@@ -62,7 +62,7 @@ set(INPUT_PARSERS_DIR input_parsers)
 include(ProcessorCount)
 ProcessorCount(CTEST_NTHREADS)
 if(CTEST_NTHREADS EQUAL 0)
-  set(CTEST_NTHREADS 1)
+    set(CTEST_NTHREADS 1)
 endif()
 
 
@@ -72,7 +72,7 @@ add_library(${MARABOU_LIB} ${SRCS_COMMON_REAL} ${SRCS_ENGINE_REAL})
 add_executable(${MARABOU_EXE} "${ENGINE_DIR}/main.cpp")
 set(MARABOU_EXE_PATH "${BIN_DIR}/${MARABOU_EXE}")
 add_custom_command(TARGET ${MARABOU_EXE} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${MARABOU_EXE}> ${MARABOU_EXE_PATH} )
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${MARABOU_EXE}> ${MARABOU_EXE_PATH} )
 
 set(MPS_PARSER_PATH "${BIN_DIR}/${MPS_PARSER}")
 
@@ -80,10 +80,10 @@ set(MPS_PARSER_PATH "${BIN_DIR}/${MPS_PARSER}")
 set(PYTHON32 FALSE)
 if(${BUILD_PYTHON})
     execute_process(COMMAND "${PYTHON_EXECUTABLE}" "-c"
-        "import struct; print(struct.calcsize('@P'));"
-    RESULT_VARIABLE _PYTHON_SUCCESS
-    OUTPUT_VARIABLE PYTHON_SIZEOF_VOID_P
-    ERROR_VARIABLE _PYTHON_ERROR_VALUE)
+            "import struct; print(struct.calcsize('@P'));"
+            RESULT_VARIABLE _PYTHON_SUCCESS
+            OUTPUT_VARIABLE PYTHON_SIZEOF_VOID_P
+            ERROR_VARIABLE _PYTHON_ERROR_VALUE)
     # message("PYTHON SIZEOF VOID p ${PYTHON_SIZEOF_VOID_P}")
     if (PYTHON_SIZEOF_VOID_P EQUAL 4 AND NOT ${FORCE_PYTHON_BUILD})
         set(PYTHON32 TRUE)
@@ -156,11 +156,24 @@ set(LIBS ${Boost_LIBRARIES})
 set(APRON_ROOT "${APRON_DIR}/installed")
 
 if(NOT EXISTS "${APRON_DIR}")
-  execute_process(COMMAND ${TOOLS_DIR}/download_apron.sh)
+    execute_process(COMMAND ${TOOLS_DIR}/download_apron.sh)
 endif()
 
 set(APRON_LIB boxD_debug)
+set(APRON_LIB_3 t1pD_debug)
 set(APRON_LIB_2 apron_debug)
+set(APRON_LIB_3 t1pD_debug)
+set(APRON_LIB_4 polkaMPQ_debug)
+
+add_library(${APRON_LIB_3} SHARED IMPORTED)
+set_target_properties(${APRON_LIB_3} PROPERTIES IMPORTED_LOCATION ${APRON_DIR}/installed/lib/libt1pD_debug.a)
+list(APPEND LIBS ${APRON_LIB_3})
+target_include_directories(${APRON_LIB_3} INTERFACE ${APRON_DIR}/installed/include ${APRON_DIR}/taylor1plus)
+
+add_library(${APRON_LIB_4} SHARED IMPORTED)
+set_target_properties(${APRON_LIB_4} PROPERTIES IMPORTED_LOCATION ${APRON_DIR}/installed/lib/libpolkaMPQ_debug.a)
+list(APPEND LIBS ${APRON_LIB_4})
+target_include_directories(${APRON_LIB_4} INTERFACE ${APRON_DIR}/installed/include)
 
 add_library(${APRON_LIB} SHARED IMPORTED)
 set_target_properties(${APRON_LIB} PROPERTIES IMPORTED_LOCATION ${APRON_DIR}/installed/lib/libboxD_debug.a)
@@ -181,10 +194,10 @@ find_package(Threads REQUIRED)
 list(APPEND LIBS Threads::Threads)
 
 if (BUILD_STATIC_MARABOU)
-  # build a static library
-  target_link_libraries(${MARABOU_LIB} ${LIBS} -static)
+    # build a static library
+    target_link_libraries(${MARABOU_LIB} ${LIBS} -static)
 else()
-  target_link_libraries(${MARABOU_LIB} ${LIBS})
+    target_link_libraries(${MARABOU_LIB} ${LIBS})
 endif()
 
 target_include_directories(${MARABOU_LIB} PRIVATE ${LIBS_INCLUDES})
@@ -219,7 +232,7 @@ if (${BUILD_PYTHON})
 
     if (NOT EXISTS ${PYBIND11_DIR})
         message("didnt find pybind, getting it")
-	execute_process(COMMAND ${TOOLS_DIR}/download_pybind11.${SCRIPT_EXTENSION})
+        execute_process(COMMAND ${TOOLS_DIR}/download_pybind11.${SCRIPT_EXTENSION})
     endif()
     add_subdirectory(${PYBIND11_DIR})
     pybind11_add_module(${MARABOU_PY} ${PYTHON_API_DIR}/MarabouCore.cpp)
@@ -228,7 +241,7 @@ if (${BUILD_PYTHON})
     target_include_directories(${MARABOU_PY} PRIVATE ${LIBS_INCLUDES})
 
     set_target_properties(${MARABOU_PY} PROPERTIES
-        LIBRARY_OUTPUT_DIRECTORY ${PYTHON_API_DIR})
+            LIBRARY_OUTPUT_DIRECTORY ${PYTHON_API_DIR})
     if(NOT MSVC)
         target_compile_options(${MARABOU_LIB} PRIVATE -fPIC ${RELEASE_FLAGS})
     endif()
@@ -257,8 +270,8 @@ target_compile_options(${MARABOU_TEST_LIB} PRIVATE ${CXXTEST_FLAGS})
 add_custom_target(build-tests ALL)
 
 add_custom_target(check
-      COMMAND ctest --output-on-failure -j${CTEST_NTHREADS} $$ARGS
-      DEPENDS build-tests build_input_parsers ${MARABOU_EXE})
+        COMMAND ctest --output-on-failure -j${CTEST_NTHREADS} $$ARGS
+        DEPENDS build-tests build_input_parsers ${MARABOU_EXE})
 
 
 # Decide which tests to run and execute
@@ -285,33 +298,33 @@ if (NOT ${TESTS_TO_RUN} STREQUAL "")
     # make ctest verbose
     set(CTEST_OUTPUT_ON_FAILURE 1)
     add_custom_command(
-        TARGET build-tests
-        POST_BUILD
-        COMMAND ctest --output-on-failure  -L "\"(${TESTS_TO_RUN})\"" -j${CTEST_NTHREADS} $$ARGS
+            TARGET build-tests
+            POST_BUILD
+            COMMAND ctest --output-on-failure  -L "\"(${TESTS_TO_RUN})\"" -j${CTEST_NTHREADS} $$ARGS
     )
 endif()
 
 # Add the input parsers
 add_custom_target(build_input_parsers)
 add_dependencies(build_input_parsers ${MPS_PARSER} ${ACAS_PARSER}
-    ${BERKELEY_PARSER})
+        ${BERKELEY_PARSER})
 
 add_subdirectory(${SRC_DIR})
 add_subdirectory(${TOOLS_DIR})
 add_subdirectory(${REGRESS_DIR})
 
 execute_process(
-  COMMAND git rev-parse --abbrev-ref HEAD
-  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-  OUTPUT_VARIABLE GIT_BRANCH
-  OUTPUT_STRIP_TRAILING_WHITESPACE
+        COMMAND git rev-parse --abbrev-ref HEAD
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        OUTPUT_VARIABLE GIT_BRANCH
+        OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 # Get the latest abbreviated commit hash of the working branch
 execute_process(
-  COMMAND git log -1 --format=%h
-  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-  OUTPUT_VARIABLE GIT_COMMIT_HASH
-  OUTPUT_STRIP_TRAILING_WHITESPACE
+        COMMAND git log -1 --format=%h
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        OUTPUT_VARIABLE GIT_COMMIT_HASH
+        OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 
 # Marabou Version

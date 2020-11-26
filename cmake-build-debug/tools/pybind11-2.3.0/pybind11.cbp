@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="pybind11"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\tools\;CMake Files\tools\pybind11-2.3.0\;CMake Files\tools\pybind11-2.3.0\tools\;CMake Files\tools\cxxtest\;CMake Files\src\;CMake Files\src\configuration\;CMake Files\src\engine\;CMake Files\src\basis_factorization\;CMake Files\src\common\;CMake Files\src\system_tests\;CMake Files\src\input_parsers\;CMake Files\src\query_loader\;CMake Files\regress\;CMake Files\regress\regress0\;CMake Files\regress\regress1\;CMake Files\regress\regress2\;CMake Files\regress\regress3\;CMake Files\regress\regress4\;CMake Files\regress\regress5\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/cmake-build-debug/tools/pybind11-2.3.0"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/cmake-build-debug/tools/pybind11-2.3.0/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/cmake-build-debug/tools/pybind11-2.3.0/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/cmake-build-debug/tools/pybind11-2.3.0/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/cmake-build-debug/tools/pybind11-2.3.0/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/tools/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\tools\"/>
+		</Unit>
+		<Unit filename="/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/tools/pybind11-2.3.0/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\tools\pybind11-2.3.0\"/>
+		</Unit>
+		<Unit filename="/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/tools/pybind11-2.3.0/tools/FindPythonLibsNew.cmake">
+			<Option virtualFolder="CMake Files\tools\pybind11-2.3.0\tools\"/>
+		</Unit>
+		<Unit filename="/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/tools/pybind11-2.3.0/tools/pybind11Tools.cmake">
+			<Option virtualFolder="CMake Files\tools\pybind11-2.3.0\tools\"/>
+		</Unit>
+		<Unit filename="/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/tools/cxxtest/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\tools\cxxtest\"/>
+		</Unit>
+		<Unit filename="/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/src/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\"/>
+		</Unit>
+		<Unit filename="/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/src/configuration/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\configuration\"/>
+		</Unit>
+		<Unit filename="/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/src/engine/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\engine\"/>
+		</Unit>
+		<Unit filename="/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/src/basis_factorization/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\basis_factorization\"/>
+		</Unit>
+		<Unit filename="/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/src/common/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\common\"/>
+		</Unit>
+		<Unit filename="/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/src/system_tests/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\system_tests\"/>
+		</Unit>
+		<Unit filename="/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/src/input_parsers/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\input_parsers\"/>
+		</Unit>
+		<Unit filename="/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/src/query_loader/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\query_loader\"/>
+		</Unit>
+		<Unit filename="/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/regress/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\regress\"/>
+		</Unit>
+		<Unit filename="/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/regress/regress0/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\regress\regress0\"/>
+		</Unit>
+		<Unit filename="/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/regress/regress1/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\regress\regress1\"/>
+		</Unit>
+		<Unit filename="/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/regress/regress2/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\regress\regress2\"/>
+		</Unit>
+		<Unit filename="/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/regress/regress3/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\regress\regress3\"/>
+		</Unit>
+		<Unit filename="/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/regress/regress4/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\regress\regress4\"/>
+		</Unit>
+		<Unit filename="/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/regress/regress5/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\regress\regress5\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
