@@ -77,9 +77,9 @@ public:
         {
             performAffineTransformation();
             //performActivation();
-            exit( 1 );
+           // exit( 1 );
         }
-//exit(1);
+exit(1);
         // TODO: handle output layer
 
         deallocate();
@@ -183,7 +183,7 @@ private:
         ap_abstract1_fprint( stdout, _apronManager, &_currentAV );
 
         // affine transformation
-        for ( unsigned i = 0; i < currentLayerSize-40; ++i )
+        for ( unsigned i = 0; i < currentLayerSize; ++i )
         {
 
             ap_linexpr1_t expr1 = ap_linexpr1_make(_apronEnvironment,AP_LINEXPR_SPARSE,0);
@@ -215,113 +215,42 @@ private:
             // ******* Activation function *************
 
             ap_lincons1_array_t arrayAct = ap_lincons1_array_make(_apronEnvironment, 1);
-            // ap_lincons1_array_t arrayAct1 = ap_lincons1_array_make(env, 1);
             ap_linexpr1_t exprAct = ap_linexpr1_make(_apronEnvironment, AP_LINEXPR_SPARSE, 2);
             ap_lincons1_t consAct = ap_lincons1_make(AP_CONS_SUPEQ, &exprAct, NULL);
             ap_lincons1_set_list(&consAct,
-                                 AP_COEFF_S_INT, 1, variableToString( NeuronIndex( _currentLayer, i ) ).ascii(),
+                                 AP_COEFF_S_DOUBLE, 1.0, variableToString(NeuronIndex(_currentLayer, i)).ascii(),
                                  AP_END);
             ap_lincons1_array_set(&arrayAct, 0, &consAct);
-            // ap_lincons1_array_set(&arrayAct1, 0, &consAct1);
             ap_lincons1_array_fprint(stdout, &arrayAct);
-            // ap_lincons1_array_fprint(stdout, &arrayAct1);
-
-            ap_abstract1_t absACT = ap_abstract1_meet_lincons_array(_apronManager,true,&_currentAV,&arrayAct);
+            ap_abstract1_t activeAV = ap_abstract1_meet_lincons_array(_apronManager,false,&_currentAV,&arrayAct);
             fprintf(stdout,"Abstract value after activation:\n");
-            ap_abstract1_fprint(stdout,_apronManager,&absACT);
-
-            ap_abstract1_t absJoin = ap_abstract1_join(_apronManager,false,&absACT,&_currentAV);
-            //fprintf(stdout,"Abstract value 3 (Meet of 1 and 2):\n");
-            //ap_abstract1_fprint(stdout,_apronManager,&abs3);
-            fprintf(stdout,"Abstract value 3 (join of 1 and 2):\n");
-            ap_abstract1_fprint(stdout,_apronManager,&absJoin);
-
-/*             Active case: neuron is positive and unchanged
-            */
+            ap_abstract1_fprint(stdout,_apronManager,&activeAV);
 
             /*
-                ap_lincons1_array_t activeConstraintArray = ap_lincons1_array_make( _apronEnvironment, 1 );
-
-                // Weight equations
-                ap_linexpr1_t activeExpr = ap_linexpr1_make( _apronEnvironment,
-                                                             AP_LINEXPR_SPARSE,
-                                                             0 );
-                ap_lincons1_t activeCons = ap_lincons1_make( AP_CONS_SUPEQ,
-                                                             &activeExpr,
-                                                             NULL );
-
-                // Neuron is positive
-                ap_lincons1_set_list( &activeCons,
-                                      AP_COEFF_S_INT, 1, variableToString( NeuronIndex( _currentLayer, i ) ).ascii(),
-                                      AP_END );
-
-                ap_lincons1_array_set( &activeConstraintArray, 0, &activeCons );
-                ap_lincons1_array_fprint(stdout,&activeConstraintArray);
-
-             */
-            /*ap_abstract1_t activeAV = ap_abstract1_of_lincons_array( _apronManager,
-                                                                     _apronEnvironment,
-                                                                     &activeConstraintArray );
+                Inactive case: neuron is zero
             */
-            //ap_abstract1_t abs1 = ap_abstract1_meet_lincons_array(_apronManager,true,&_currentAV,&activeConstraintArray);
-            //ap_abstract1_fprint(stdout,_apronManager,&abs1);
 
+            // Weight equations
+            ap_linexpr1_t  inactiveExpr1= ap_linexpr1_make( _apronEnvironment,
+                                                            AP_LINEXPR_SPARSE,0 );
+            // Neuron is negative
+            ap_linexpr1_set_list(&inactiveExpr1,
+                                 AP_COEFF_S_DOUBLE, 0.0, variableToString(NeuronIndex(_currentLayer, i)).ascii(),
+                                 AP_END);
 
-
-//********************Activation ended ***************
+            ap_abstract1_t inactiveAV = ap_abstract1_assign_linexpr(_apronManager, true, &_currentAV, (ap_var_t) variableToString(NeuronIndex(_currentLayer, i)).ascii(), &inactiveExpr1, NULL);
+            fprintf(stdout,"Abstract value: Inactive case\n");
+            ap_abstract1_fprint(stdout,_apronManager,&inactiveAV);
+            _currentAV = ap_abstract1_join(_apronManager,false,&inactiveAV,&activeAV);
+            fprintf(stdout,"Abstract value 3 (join of 1 and 2):\n");
+            ap_abstract1_fprint(stdout,_apronManager,&_currentAV);
+            
+            printf("\n<--------------abstract test finished------------------>\n");
 
 
         }
 
 
-        // Weight equations
-        /* for ( unsigned i = 0; i < currentLayerSize; ++i )
-         {
-
-             ap_linexpr1_t expr1 = ap_linexpr1_make( _apronEnvironment,
-                                                     AP_LINEXPR_SPARSE,
-                                                     1 );
-             ap_lincons1_t cons1 = ap_lincons1_make( AP_CONS_EQ,
-                                                     &expr1,
-                                                     NULL );
-
-
-
-             // Add the target weighted sum variable and the bias
-             ap_lincons1_set_list( &cons1,
-                                   AP_COEFF_S_INT, -1, variableToString( NeuronIndex( _currentLayer, i ) ).ascii(),
-                                   AP_CST_S_DOUBLE, (*_bias)[NeuronIndex( _currentLayer, i )],
-                                   AP_END );
-
-             // printf("\n The value of bias = %f ", (*_bias)[NeuronIndex( _currentLayer, i )]);
-
-             //  ap_lincons1_set_list( &cons1,
-             //                       AP_COEFF_S_INT, -1, variableToString( NeuronIndex( _currentLayer, i ) ).ascii(),
-             //                      AP_END );
-             for ( unsigned j = 0; j < previousLayerSize; ++j )
-             {
-                 double weight = _weights[_currentLayer - 1][j * currentLayerSize + i];
-                 ap_lincons1_set_list( &cons1,
-                                       AP_COEFF_S_DOUBLE, weight, variableToString( NeuronIndex( _currentLayer - 1, j ) ).ascii(),
-                                       AP_END );
-             }
-
-             ap_lincons1_array_set( &constraintArray, i, &cons1 );
-
-             // Register the constraint
-             //  ap_lincons1_array_set( &constraintArray, (i*2)+1, &cons );
-         }
-
-              _currentAV = ap_abstract1_of_lincons_array( _apronManager,
-                                                          _apronEnvironment,
-                                                          &constraintArray );
-
-              printf( "_currentAV after affine transformation:\n");
-              ap_abstract1_fprint( stdout, _apronManager, &_currentAV );
-
-         ap_lincons1_array_fprint(stdout,&constraintArray);
-         ap_lincons1_array_clear( &constraintArray );
- */
     }
 
     void performActivation()
