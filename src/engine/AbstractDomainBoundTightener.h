@@ -73,11 +73,11 @@ public:
         constructInputAbstractValue();
 
         // Step 2: propagate through the hidden layers
-        for ( _currentLayer = 1; _currentLayer < _numberOfLayers ; ++_currentLayer )
+        for ( _currentLayer = 1; _currentLayer < 3 ; ++_currentLayer )
         {
             performAffineTransformation();
             //performActivation();
-           // exit( 1 );
+      //      exit( 1 );
         }
 exit(1);
         // TODO: handle output layer
@@ -127,6 +127,8 @@ private:
         {
             double lb = _lowerBoundsActivations[0][i];
             double ub = _upperBoundsActivations[0][i];
+            printf("\n lower bound = %f ",lb);
+            printf("\n upper bound = %f ",ub);
 
             // x - lb >= 0
             ap_linexpr1_t exprLb = ap_linexpr1_make( _apronEnvironment,
@@ -135,9 +137,9 @@ private:
             ap_lincons1_t consLb = ap_lincons1_make( AP_CONS_SUPEQ,
                                                      &exprLb,
                                                      NULL );
-            printf("\n lower bound = %f ",lb);
+
             printf("\n string name = %s",variableToString( NeuronIndex( 0, i ) ).ascii());
-            printf("\n upper bound = %f ",ub);
+
             ap_lincons1_set_list( &consLb,
                                   AP_COEFF_S_INT, 1, variableToString( NeuronIndex( 0, i ) ).ascii(),
                                   AP_CST_S_DOUBLE, -lb,
@@ -179,13 +181,18 @@ private:
         unsigned currentLayerSize = (*_layerSizes)[_currentLayer];
 
         // ap_lincons1_array_t constraintArray = ap_lincons1_array_make( _apronEnvironment, currentLayerSize );
-        printf( "_currentAV after input layer construction:\n");
+        printf( "_currentAV after input layer(first layer) construction:\n");
         ap_abstract1_fprint( stdout, _apronManager, &_currentAV );
 
         // affine transformation
         for ( unsigned i = 0; i < currentLayerSize; ++i )
         {
 
+            double lb = _lowerBoundsActivations[_currentLayer][i];
+            double ub = _upperBoundsActivations[_currentLayer][i];
+            printf("\n The Neuron name  = %s", variableToString( NeuronIndex( _currentLayer, i ) ).ascii());
+            printf("\n lower bound = %f ",lb);
+            printf("\n upper bound = %f ",ub);
             ap_linexpr1_t expr1 = ap_linexpr1_make(_apronEnvironment,AP_LINEXPR_SPARSE,0);
             ap_linexpr1_t expr = ap_linexpr1_make(_apronEnvironment,AP_LINEXPR_SPARSE,0);
             for ( unsigned j = 0; j < previousLayerSize; ++j )
@@ -202,18 +209,18 @@ private:
                                  AP_END);
             fprintf(stdout,"\n Assignement (side-effect) in abstract value of neuron by expression:\n");
             ap_linexpr1_fprint(stdout,&expr1);
-            printf("\n The Neuron name  = %s\n", variableToString( NeuronIndex( _currentLayer, i ) ).ascii());
             _currentAV = ap_abstract1_assign_linexpr(_apronManager, true, &_currentAV,
                                                      (ap_var_t) variableToString(NeuronIndex(_currentLayer, i)).ascii(), &expr1, NULL);
             fprintf(stdout,"\n");
 
-            fprintf(stdout," Current AV after affine transformation :\n");
-            ap_abstract1_fprint(stdout,_apronManager,&_currentAV);
+            fprintf(stdout," Current AV after equating weighted sum and bias :\n");
+            //ap_abstract1_fprint(stdout,_apronManager,&_currentAV);
             fprintf(stdout,"\n");
             ap_linexpr1_clear(&expr1);
             ap_linexpr1_clear(&expr);
             // ******* Activation function *************
 
+            // ***********Active case **************
             ap_lincons1_array_t arrayAct = ap_lincons1_array_make(_apronEnvironment, 1);
             ap_linexpr1_t exprAct = ap_linexpr1_make(_apronEnvironment, AP_LINEXPR_SPARSE, 2);
             ap_lincons1_t consAct = ap_lincons1_make(AP_CONS_SUPEQ, &exprAct, NULL);
@@ -223,13 +230,65 @@ private:
             ap_lincons1_array_set(&arrayAct, 0, &consAct);
             ap_lincons1_array_fprint(stdout, &arrayAct);
             ap_abstract1_t activeAV = ap_abstract1_meet_lincons_array(_apronManager,false,&_currentAV,&arrayAct);
-            fprintf(stdout,"Abstract value after activation:\n");
-            ap_abstract1_fprint(stdout,_apronManager,&activeAV);
+            fprintf(stdout,"Abstract value after activation (active case):\n");
+            //ap_abstract1_fprint(stdout,_apronManager,&activeAV);
 
             /*
                 Inactive case: neuron is zero
             */
 
+            ap_lincons1_array_t arrayInAct = ap_lincons1_array_make(_apronEnvironment, 1);
+            ap_linexpr1_t exprInAct = ap_linexpr1_make(_apronEnvironment, AP_LINEXPR_SPARSE, 2);
+            ap_lincons1_t consInAct = ap_lincons1_make(AP_CONS_SUPEQ, &exprInAct, NULL);
+            ap_lincons1_set_list(&consInAct,
+                                 AP_COEFF_S_DOUBLE, -1.0, variableToString(NeuronIndex(_currentLayer, i)).ascii(),
+                                 AP_END);
+            ap_lincons1_array_set(&arrayInAct, 0, &consInAct);
+            ap_lincons1_array_fprint(stdout, &arrayInAct);
+            ap_abstract1_t inactiveAV = ap_abstract1_meet_lincons_array(_apronManager,false,&_currentAV,&arrayInAct);
+            fprintf(stdout,"Abstract value after activation (inactive case):\n");
+            //ap_abstract1_fprint(stdout,_apronManager,&inactiveAV);
+
+            /*
+              Putting it all together: two meets and a join
+            */
+            bool notDestructive = false;
+            ap_abstract1_t meetActive = ap_abstract1_meet( _apronManager,
+                                                           notDestructive,
+                                                           &activeAV,
+                                                           &_currentAV );
+            printf( "--- Applying activation function --- \n");
+            printf( "meet active:\n" );
+            //ap_abstract1_fprint( stdout, _apronManager, &meetActive );
+
+            ap_abstract1_t meetInactive = ap_abstract1_meet( _apronManager,
+                                                             notDestructive,
+                                                             &_currentAV,
+                                                             &inactiveAV );
+
+            ap_linexpr1_t  inactiveExpr1= ap_linexpr1_make( _apronEnvironment,
+                                                            AP_LINEXPR_SPARSE,
+                                                            0 );
+            // Neuron is negative
+            ap_linexpr1_set_list(&inactiveExpr1,
+                                 AP_COEFF_S_DOUBLE, 0.0, variableToString(NeuronIndex(_currentLayer, i)).ascii(),
+                                 AP_END);
+            meetInactive  = ap_abstract1_assign_linexpr(_apronManager, true, &meetInactive, (ap_var_t) variableToString(
+                    NeuronIndex(_currentLayer, i)).ascii(), &inactiveExpr1, NULL);
+            printf( "\nmeet inactive:\n" );
+            //ap_abstract1_fprint( stdout, _apronManager, &meetInactive );
+            _currentAV = ap_abstract1_join( _apronManager,
+                                            notDestructive,
+                                            &meetActive,
+                                            &meetInactive );
+            printf( "\nnew AV after join:\n" );
+            printf(" The Neuron name  = %s", variableToString( NeuronIndex( _currentLayer, i ) ).ascii());
+            printf("\n lower bound = %f ",lb);
+            printf("\n upper bound = %f \n",ub);
+            ap_abstract1_fprint( stdout, _apronManager, &_currentAV );
+
+
+            /*
             // Weight equations
             ap_linexpr1_t  inactiveExpr1= ap_linexpr1_make( _apronEnvironment,
                                                             AP_LINEXPR_SPARSE,0 );
@@ -244,7 +303,7 @@ private:
             _currentAV = ap_abstract1_join(_apronManager,false,&inactiveAV,&activeAV);
             fprintf(stdout,"Abstract value 3 (join of 1 and 2):\n");
             ap_abstract1_fprint(stdout,_apronManager,&_currentAV);
-            
+        */
             printf("\n<--------------abstract test finished------------------>\n");
 
 

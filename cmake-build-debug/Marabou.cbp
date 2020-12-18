@@ -75,7 +75,7 @@
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add option="-DRESOURCES_DIR=&quot;/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/resources&quot;"/>
-					<Add option="-DGIT_COMMIT_HASH=&quot;7ef31e6&quot;"/>
+					<Add option="-DGIT_COMMIT_HASH=&quot;195edb9&quot;"/>
 					<Add option="-DGIT_BRANCH=&quot;AIZono&quot;"/>
 					<Add option="-DMARABOU_VERSION=&quot;1.0.+&quot;"/>
 					<Add directory="/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/tools/boost_1_68_0/installed/include"/>
@@ -111,7 +111,7 @@
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add option="-DRESOURCES_DIR=&quot;/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/resources&quot;"/>
-					<Add option="-DGIT_COMMIT_HASH=&quot;7ef31e6&quot;"/>
+					<Add option="-DGIT_COMMIT_HASH=&quot;195edb9&quot;"/>
 					<Add option="-DGIT_BRANCH=&quot;AIZono&quot;"/>
 					<Add option="-DMARABOU_VERSION=&quot;1.0.+&quot;"/>
 					<Add directory="/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/tools/boost_1_68_0/installed/include"/>
@@ -147,7 +147,7 @@
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add option="-DRESOURCES_DIR=&quot;/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/resources&quot;"/>
-					<Add option="-DGIT_COMMIT_HASH=&quot;7ef31e6&quot;"/>
+					<Add option="-DGIT_COMMIT_HASH=&quot;195edb9&quot;"/>
 					<Add option="-DGIT_BRANCH=&quot;AIZono&quot;"/>
 					<Add option="-DMARABOU_VERSION=&quot;1.0.+&quot;"/>
 					<Add directory="/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/tools/boost_1_68_0/installed/include"/>
@@ -183,7 +183,7 @@
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add option="-DRESOURCES_DIR=&quot;/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/resources&quot;"/>
-					<Add option="-DGIT_COMMIT_HASH=&quot;7ef31e6&quot;"/>
+					<Add option="-DGIT_COMMIT_HASH=&quot;195edb9&quot;"/>
 					<Add option="-DGIT_BRANCH=&quot;AIZono&quot;"/>
 					<Add option="-DMARABOU_VERSION=&quot;1.0.+&quot;"/>
 					<Add directory="/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/tools/boost_1_68_0/installed/include"/>
@@ -219,7 +219,7 @@
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add option="-DRESOURCES_DIR=&quot;/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/resources&quot;"/>
-					<Add option="-DGIT_COMMIT_HASH=&quot;7ef31e6&quot;"/>
+					<Add option="-DGIT_COMMIT_HASH=&quot;195edb9&quot;"/>
 					<Add option="-DGIT_BRANCH=&quot;AIZono&quot;"/>
 					<Add option="-DMARABOU_VERSION=&quot;1.0.+&quot;"/>
 					<Add directory="/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/tools/pybind11-2.3.0/include"/>
@@ -257,7 +257,7 @@
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add option="-DRESOURCES_DIR=&quot;/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/resources&quot;"/>
-					<Add option="-DGIT_COMMIT_HASH=&quot;7ef31e6&quot;"/>
+					<Add option="-DGIT_COMMIT_HASH=&quot;195edb9&quot;"/>
 					<Add option="-DGIT_BRANCH=&quot;AIZono&quot;"/>
 					<Add option="-DMARABOU_VERSION=&quot;1.0.+&quot;"/>
 					<Add directory="/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/tools/pybind11-2.3.0/include"/>
@@ -305,7 +305,7 @@
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add option="-DRESOURCES_DIR=&quot;/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/resources&quot;"/>
-					<Add option="-DGIT_COMMIT_HASH=&quot;7ef31e6&quot;"/>
+					<Add option="-DGIT_COMMIT_HASH=&quot;195edb9&quot;"/>
 					<Add option="-DGIT_BRANCH=&quot;AIZono&quot;"/>
 					<Add option="-DMARABOU_VERSION=&quot;1.0.+&quot;"/>
 					<Add directory="/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/tools/cxxtest"/>
@@ -342,7 +342,7 @@
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add option="-DRESOURCES_DIR=&quot;/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/resources&quot;"/>
-					<Add option="-DGIT_COMMIT_HASH=&quot;7ef31e6&quot;"/>
+					<Add option="-DGIT_COMMIT_HASH=&quot;195edb9&quot;"/>
 					<Add option="-DGIT_BRANCH=&quot;AIZono&quot;"/>
 					<Add option="-DMARABOU_VERSION=&quot;1.0.+&quot;"/>
 					<Add directory="/home/jnanamurthy/Projects/Project-AI/AIZone/Marabou/tools/cxxtest"/>
