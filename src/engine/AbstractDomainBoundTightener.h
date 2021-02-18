@@ -31,6 +31,11 @@
 #include "pk.h"
 #include "pkeq.h"
 
+#include "num.h"
+#include "itv.h"
+#include "t1p_internal.h"
+#include "t1p_fun.h"
+
 /*
   A superclass for performing abstract-interpretation-based bound
   tightening. This is a virtual class: a child class must provide the
@@ -73,16 +78,16 @@ public:
         constructInputAbstractValue();
 
         // Step 2: propagate through the hidden layers
-        for ( _currentLayer = 1; _currentLayer < 3 ; ++_currentLayer )
+        for ( _currentLayer = 1; _currentLayer < _numberOfLayers ; ++_currentLayer )
         {
             performAffineTransformation();
             //performActivation();
       //      exit( 1 );
         }
-exit(1);
-        // TODO: handle output layer
 
+        // TODO: handle output layer
         deallocate();
+        exit(1);
     }
 
 private:
@@ -193,11 +198,13 @@ private:
             printf("\n The Neuron name  = %s", variableToString( NeuronIndex( _currentLayer, i ) ).ascii());
             printf("\n lower bound = %f ",lb);
             printf("\n upper bound = %f ",ub);
+            printf("\n Bias = %f ",(*_bias)[NeuronIndex( _currentLayer, i)]);
             ap_linexpr1_t expr1 = ap_linexpr1_make(_apronEnvironment,AP_LINEXPR_SPARSE,0);
             ap_linexpr1_t expr = ap_linexpr1_make(_apronEnvironment,AP_LINEXPR_SPARSE,0);
             for ( unsigned j = 0; j < previousLayerSize; ++j )
             {
                 double weight = _weights[_currentLayer - 1][j * currentLayerSize + i];
+                printf("\n weight = %f ",weight);
                 ap_lincons1_set_list(reinterpret_cast<ap_lincons1_t *>(&expr1),
                                      AP_COEFF_S_DOUBLE, weight, variableToString( NeuronIndex( _currentLayer - 1, j ) ).ascii(),
                                      AP_END );
@@ -232,6 +239,9 @@ private:
             ap_abstract1_t activeAV = ap_abstract1_meet_lincons_array(_apronManager,false,&_currentAV,&arrayAct);
             fprintf(stdout,"Abstract value after activation (active case):\n");
             //ap_abstract1_fprint(stdout,_apronManager,&activeAV);
+            ap_lincons1_array_clear( &arrayAct);
+           // ap_linexpr1_clear(&exprAct);
+           // ap_lincons1_clear(&consAct);
 
             /*
                 Inactive case: neuron is zero
@@ -247,6 +257,10 @@ private:
             ap_lincons1_array_fprint(stdout, &arrayInAct);
             ap_abstract1_t inactiveAV = ap_abstract1_meet_lincons_array(_apronManager,false,&_currentAV,&arrayInAct);
             fprintf(stdout,"Abstract value after activation (inactive case):\n");
+            ap_lincons1_array_clear( &arrayInAct);
+           // ap_linexpr1_clear(&exprInAct);
+           // ap_lincons1_clear(&consInAct);
+
             //ap_abstract1_fprint(stdout,_apronManager,&inactiveAV);
 
             /*
@@ -415,8 +429,8 @@ private:
 
     void allocate()
     {
-        _apronManager = box_manager_alloc();
-        //_apronManager = t1p_manager_alloc();
+        //_apronManager = box_manager_alloc();
+       _apronManager = t1p_manager_alloc();
 
         // Count the total number of variables
         _totalNumberOfVariables = 0;
